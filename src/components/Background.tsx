@@ -20,6 +20,7 @@ export default function Background({children}: BackgroundProps) {
         source={selectedBackground}
         className="absolute w-full h-full"
         resizeMode="stretch"
+        style={{flex :1, height: '110%'}}
       />
       {children}
     </SafeAreaView>

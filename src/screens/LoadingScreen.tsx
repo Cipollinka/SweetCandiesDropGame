@@ -1,4 +1,4 @@
-import {Image, Animated, SafeAreaView} from 'react-native';
+import {Image, Animated, SafeAreaView, View} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
@@ -36,7 +36,7 @@ export default function LoadingScreen() {
   }, [fadeAnim, slideAnim1, slideAnim2, navigation]);
 
   return (
-    <SafeAreaView className="flex-1">
+    <View className="flex-1">
       <Animated.View
         style={{
           opacity: fadeAnim,
@@ -64,6 +64,6 @@ export default function LoadingScreen() {
           />
         </Animated.View>
       </Animated.View>
-    </SafeAreaView>
+    </View>
   );
 }
