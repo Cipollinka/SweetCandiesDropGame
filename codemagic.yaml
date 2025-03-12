@@ -52,7 +52,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - polikarpsawa@op.pl       # <----
+          - coryhawkins426@gmail.com       # <----
         notify:
           success: true
           failure: false
