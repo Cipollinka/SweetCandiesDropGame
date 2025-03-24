@@ -84,7 +84,7 @@ export default function AppManager() {
         OneSignal.Notifications.requestPermission(true).then(res => {
           // робимо запит та обробляємо його
           isPushAccess.current = res;
-          getAsaAttribution();
+          initAppsflyer();
         });
       }
     });
@@ -98,7 +98,7 @@ export default function AppManager() {
           if (res.data.af_status === 'Non-organic') {
             if (res.data.campaign.toString().includes('_')) {
               subsRef.current = res.data.campaign;
-              appendParams.current = `${res}`;
+              appendParams.current = JSON.stringify(res);
             } else {
               appendParams.current = 'CONVERT-SUBS-MISSING-SPLITTER';
             }
@@ -114,27 +114,16 @@ export default function AppManager() {
 
   async function getAsaAttribution() {
     try {
-      const adServicesAttributionData =
-        await AppleAdsAttributionInstance.getAdServicesAttributionData();
-      if (
-        !adServicesAttributionData ||
-        typeof adServicesAttributionData.attribution !== 'boolean'
-      ) {
-        appendParams.current = 'ORGANIC';
-        initAppsflyer();
-        return;
-      }
+      const adServicesAttributionData = JSON.parse(JSON.stringify(await AppleAdsAttributionInstance.getAdServicesAttributionData()));
       if (adServicesAttributionData.attribution === true) {
-        // appendParams.current = 'ASA';
-        appendParams.current = `${adServicesAttributionData}`;
-        subsRef.current = 'asa';
-        generateFinish();
+        appendParams.current = JSON.stringify(adServicesAttributionData);
+        subsRef.current = 'asa'
       } else {
-        initAppsflyer();
+        appendParams.current = 'ORGANIC'
       }
-    } catch (error) {
-      appendParams.current = 'ORGANIC';
-      initAppsflyer();
+    }
+    catch (err) {
+      appendParams.current = 'ORGANIC'
     }
   }
 
@@ -277,6 +266,7 @@ export default function AppManager() {
 
   useEffect(() => {
     initApp();
+    getAsaAttribution();
   }, []);
 
   const getView = () => {
