@@ -98,11 +98,10 @@ export default function AppManager() {
           if (res.data.af_status === 'Non-organic') {
             if (res.data.campaign.toString().includes('_')) {
               subsRef.current = res.data.campaign;
-              appendParams.current = JSON.stringify(res);
             } else {
-              appendParams.current = 'CONVERT-SUBS-MISSING-SPLITTER';
               subsRef.current = '';
             }
+            appendParams.current = JSON.stringify(res);
           }
           generateFinish();
         }
