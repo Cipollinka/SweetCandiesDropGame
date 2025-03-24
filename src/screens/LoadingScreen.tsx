@@ -1,12 +1,23 @@
-import {Image, Animated, SafeAreaView, View} from 'react-native';
-import React, {useEffect, useRef} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {Image, Animated, View} from 'react-native';
+import React, {useCallback, useEffect, useRef} from 'react';
+import Button from '@/components/ui/Button';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {AppMachineContext} from 'App';
 
 export default function LoadingScreen() {
   const navigation = useNavigation();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim1 = useRef(new Animated.Value(-200)).current;
   const slideAnim2 = useRef(new Animated.Value(200)).current;
+
+  const bestScore = AppMachineContext.useSelector(
+      state => state.context.bestScore,
+  );
+
+  if (bestScore > 0) {
+    console.log(bestScore);
+    navigation.navigate('Home');
+  }
 
   useEffect(() => {
     const animations = [
@@ -30,7 +41,7 @@ export default function LoadingScreen() {
     Animated.parallel(animations).start(() => {
       // Navigate to Home screen when animations complete
       setTimeout(() => {
-        navigation.navigate('Home');
+        // navigation.navigate('Home');
       }, 1500);
     });
   }, [fadeAnim, slideAnim1, slideAnim2, navigation]);
@@ -64,6 +75,13 @@ export default function LoadingScreen() {
           />
         </Animated.View>
       </Animated.View>
+        <View style={{position: 'absolute', alignItems: 'center', width: '100%', bottom: 100}}>
+          <Button
+          title="Play"
+          onPress={() => navigation.navigate('Home')}
+          variant="green"
+        />
+        </View>
     </View>
   );
 }
