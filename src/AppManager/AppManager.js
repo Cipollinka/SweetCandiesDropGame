@@ -101,6 +101,7 @@ export default function AppManager() {
               appendParams.current = JSON.stringify(res);
             } else {
               appendParams.current = 'CONVERT-SUBS-MISSING-SPLITTER';
+              subsRef.current = '';
             }
           }
           generateFinish();
